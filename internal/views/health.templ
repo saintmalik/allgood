@@ -1,11 +1,11 @@
 package views
 
 import (
-    "github.com/saintmalik/allgood/healthcheck"
+    "github.com/saintmalik/allgood/internal/models"
     // "fmt"
 )
 
-templ HealthCheckPage(results []healthcheck.Result, status string) {
+templ HealthCheckPage(results []models.Result, status string) {
     <!DOCTYPE html>
     <html lang="en">
     <head>

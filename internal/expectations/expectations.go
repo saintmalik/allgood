@@ -5,21 +5,21 @@ import (
 )
 
 type Expectation struct {
-	actual interface{}
+	actual any
 }
 
-func Expect(actual interface{}) *Expectation {
+func Expect(actual any) *Expectation {
 	return &Expectation{actual: actual}
 }
 
-func (e *Expectation) ToEqual(expected interface{}) (bool, string) {
+func (e *Expectation) ToEqual(expected any) (bool, string) {
 	if e.actual == expected {
 		return true, fmt.Sprintf("Got: %v", e.actual)
 	}
 	return false, fmt.Sprintf("Expected %v to equal %v but it doesn't", expected, e.actual)
 }
 
-func (e *Expectation) ToBeGreaterThan(expected interface{}) (bool, string) {
+func (e *Expectation) ToBeGreaterThan(expected any) (bool, string) {
 	switch actual := e.actual.(type) {
 	case int:
 		if exp, ok := expected.(int); ok {
@@ -37,7 +37,7 @@ func (e *Expectation) ToBeGreaterThan(expected interface{}) (bool, string) {
 	return false, fmt.Sprintf("Expected %v to be greater than %v but it's not", e.actual, expected)
 }
 
-func (e *Expectation) ToBeLessThan(expected interface{}) (bool, string) {
+func (e *Expectation) ToBeLessThan(expected any) (bool, string) {
 	switch actual := e.actual.(type) {
 	case int:
 		if exp, ok := expected.(int); ok {

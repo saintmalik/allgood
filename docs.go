@@ -1,2 +1,0 @@
-// allgood 
-package allgood
