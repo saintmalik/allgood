@@ -1,36 +1,41 @@
 # allgood
 
+Quickly set up a health check page for your Golang app 
+
 ![allgood](allgood.png)
 
-```
+## Installation
+```commandline
 go get github.com/saintmalik/allgood
+```
+
+## Usage
+
+```go
 
 import (
 	"github.com/saintmalik/allgood"
-	"github.com/saintmalik/allgood/checks"
 )
 
 func main() {
-	engine := allgood.NewEngine()
 
 	redisClient, err := initializeRedis(redisurl)
 	if err != nil {
 		fmt.Println("Redis initialization failed")
 	}
 
-	// mongoClient := // your MongoDB client
-	// engine.SetCheck("MongoDB connection", allgood.CheckMongoConnection(mongoClient))
 
-	ref := // your Supabase project ref
-	apikey := // your Supabase apikey
-	engine.SetCheck("Supabase connection", allgood.CheckSupabaseConnection(ref, apikey))
-	// engine.SetCheck("Postgres connection", checks.CheckPostgresConnection(postgresPool))
+	ref := "<your-supabase-project-ref>"
+	apiKey := "<your-supabase-api-key>"
 
-	engine.SetCheck("Redis connection", checks.CheckRedisConnection(redisClient))
-
-	engine.SetCheck("Disk space usage", checks.CheckDiskSpace(90))
-	engine.SetCheck("Memory usage", checks.CheckMemoryUsage(90))
-	engine.SetCheck("CPU usage", checks.CheckCPUUsage(90))
+	// Create an allgood engine and configure with the checks you want
+	engine := allgood.NewEngine(
+		allgood.WithCheckDiskSpace(90),
+		allgood.WithCheckMemoryUsage(90),
+		allgood.WithCheckCPUUsage(90),
+		allgood.WithCheckSupabaseConnection(ref,apiKey),
+		allgood.WithCheckRedisConnection(redisClient,allgood.WithCheckName("My Redis Conn"))
+	)
 
 
 	http.HandleFunc("/healthcheck", engine.HealthCheckHandler())
